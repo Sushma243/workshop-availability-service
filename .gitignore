@@ -1,0 +1,25 @@
+# Dependencies and build
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Test and tooling
+coverage/
+.nyc_output/
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+
+# OS and IDE
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Optional: uncomment if you don't want to track
+# .cursor/

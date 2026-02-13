@@ -1,0 +1,35 @@
+{
+  "info": {
+    "name": "Workshop Availability Service",
+    "description": "Query available workshop slots for fleet maintenance (MOT, ADR, CFK and repairs).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" }
+  ],
+  "item": [
+    {
+      "name": "POST /api/availability",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"services\": [\"MOT\"],\n  \"repairs\": [\"Brakes\"]\n}"
+        },
+        "url": "{{baseUrl}}/api/availability",
+        "description": "Returns available slots for requested services and repairs within 60 days from today."
+      }
+    },
+    {
+      "name": "GET /health",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/health",
+        "description": "Health check."
+      }
+    }
+  ]
+}

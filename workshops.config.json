@@ -1,0 +1,53 @@
+{
+  "services": [
+    { "id": "MOT", "name": "MOT", "durationHours": 6 },
+    { "id": "ADR", "name": "ADR", "durationHours": 4 },
+    { "id": "CFK", "name": "CFK", "durationHours": 3 }
+  ],
+  "repairs": [
+    { "id": "Brakes", "name": "Brakes", "durationHours": 1, "dependency": "MOT" },
+    { "id": "Axels", "name": "Axels", "durationHours": 2, "dependency": null },
+    { "id": "Body", "name": "Body", "durationHours": 4, "dependency": null }
+  ],
+  "workshops": [
+    {
+      "id": "workshop-1",
+      "name": "Amsterdam Central",
+      "workingHours": { "startHour": 9, "endHour": 17 },
+      "workingDays": [1, 2, 3, 4, 5],
+      "bays": [
+        {
+          "id": "W1-Bay-1",
+          "capabilities": [
+            { "type": "service", "id": "MOT", "days": [1, 2, 3, 4, 5] },
+            { "type": "repair", "id": "Brakes", "days": [1, 2, 3, 4, 5] }
+          ]
+        },
+        {
+          "id": "W1-Bay-2",
+          "capabilities": [
+            { "type": "service", "id": "ADR", "days": [1, 3, 5] },
+            { "type": "repair", "id": "Axels", "days": [2, 4] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "workshop-2",
+      "name": "Rotterdam Harbour",
+      "workingHours": { "startHour": 8, "endHour": 18 },
+      "workingDays": [1, 2, 3, 4, 5, 6],
+      "bays": [
+        {
+          "id": "W2-Bay-1",
+          "capabilities": [
+            { "type": "service", "id": "MOT", "days": [1, 2, 3, 4, 5, 6] },
+            { "type": "service", "id": "CFK", "days": [1, 2, 3, 4, 5] },
+            { "type": "repair", "id": "Brakes", "days": [1, 2, 3, 4, 5, 6] },
+            { "type": "repair", "id": "Body", "days": [1, 3, 5] }
+          ]
+        }
+      ]
+    }
+  ]
+}

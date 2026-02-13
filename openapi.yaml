@@ -1,0 +1,134 @@
+openapi: 3.0.3
+info:
+  title: Workshop Availability Service
+  description: Query available workshop slots for fleet maintenance (services and repairs).
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000
+    description: Local
+
+paths:
+  /api/availability:
+    post:
+      summary: Query availability
+      description: Returns available slots for requested services and repairs within 60 days from today.
+      operationId: getAvailability
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AvailabilityRequest'
+            example:
+              services: ["MOT"]
+              repairs: ["Brakes"]
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailabilityResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '500':
+          description: Internal server error
+
+  /health:
+    get:
+      summary: Health check
+      operationId: health
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, example: ok }
+                  service: { type: string, example: workshop-availability-service }
+
+components:
+  schemas:
+    AvailabilityRequest:
+      type: object
+      required: [services, repairs]
+      properties:
+        services:
+          type: array
+          items: { type: string }
+          description: Service IDs (e.g. MOT, ADR)
+        repairs:
+          type: array
+          items: { type: string }
+          description: Repair IDs (e.g. Brakes, Axels)
+
+    RequestSummary:
+      type: object
+      properties:
+        services: { type: array, items: { type: string } }
+        repairs: { type: array, items: { type: string } }
+        totalRequestedHours: { type: number }
+        startDate: { type: string, format: date }
+        endDate: { type: string, format: date }
+
+    ScheduledJob:
+      type: object
+      properties:
+        jobName: { type: string }
+        jobType: { type: string, enum: [service, repair] }
+        bayId: { type: string }
+        date: { type: string, format: date }
+        startHour: { type: integer }
+        endHour: { type: integer }
+        duration: { type: number }
+
+    AvailableSlot:
+      type: object
+      properties:
+        checkIn: { type: string }
+        checkOut: { type: string }
+        totalWorkHours: { type: number }
+        totalDays: { type: integer }
+        schedule:
+          type: array
+          items: { $ref: '#/components/schemas/ScheduledJob' }
+
+    WorkshopResult:
+      type: object
+      properties:
+        workshopId: { type: string }
+        workshopName: { type: string }
+        canFulfillRequest: { type: boolean }
+        missingServicesOrRepairs: { type: array, items: { type: string } }
+        availableSlots:
+          type: array
+          items: { $ref: '#/components/schemas/AvailableSlot' }
+
+    AvailabilityResponse:
+      type: object
+      properties:
+        success: { type: boolean, example: true }
+        request: { $ref: '#/components/schemas/RequestSummary' }
+        results:
+          type: array
+          items: { $ref: '#/components/schemas/WorkshopResult' }
+
+    ValidationError:
+      type: object
+      properties:
+        success: { type: boolean, example: false }
+        error: { type: string }
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field: { type: string }
+              message: { type: string }
