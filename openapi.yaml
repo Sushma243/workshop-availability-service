@@ -68,6 +68,10 @@ components:
           type: array
           items: { type: string }
           description: Repair IDs (e.g. Brakes, Axels)
+        startDate:
+          type: string
+          format: date
+          description: Optional. Start of 60-day window (YYYY-MM-DD). If omitted or in the past, today is used.
 
     RequestSummary:
       type: object

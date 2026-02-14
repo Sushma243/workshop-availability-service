@@ -18,6 +18,7 @@ Query available workshop slots for requested services and repairs within the nex
 |----------|----------|----------|--------------------------------|
 | services | string[] | No*      | Service IDs (e.g. MOT, ADR)    |
 | repairs  | string[] | No*      | Repair IDs (e.g. Brakes, Axels)|
+| startDate| string   | No       | Start of 60-day window (YYYY-MM-DD). If omitted or in the past, today is used. |
 
 *At least one of `services` or `repairs` must be non-empty.
 
@@ -27,6 +28,16 @@ Query available workshop slots for requested services and repairs within the nex
 {
   "services": ["MOT"],
   "repairs": ["Brakes"]
+}
+```
+
+**Example with custom start date**
+
+```json
+{
+  "services": ["MOT"],
+  "repairs": ["Brakes"],
+  "startDate": "2026-03-01"
 }
 ```
 

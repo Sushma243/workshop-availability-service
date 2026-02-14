@@ -52,7 +52,7 @@ If you see version numbers, you’re good. If you see “command not found”, i
 
 ## How do I run it? (step by step)
 
-Do these steps **in order** in a terminal. Replace `workshop-availability-service` with your actual project folder name if it’s different.
+Clone `https://github.com/Sushma243/workshop-availability-service.git` from github.
 
 ### Step 1: Go to the project folder
 
@@ -77,7 +77,7 @@ This downloads the libraries the project needs (Express, TypeScript, etc.). Wait
 npm run build
 ```
 
-This compiles the TypeScript code into JavaScript so Node.js can run it. You should see no errors.
+This builds the **React frontend** (in `client/`) and compiles the **backend** TypeScript into JavaScript. You should see no errors. To build only the backend: `npx tsc`. To build only the frontend: `npm run build:client`.
 
 ### Step 4: Start the server
 
@@ -94,7 +94,7 @@ POST /api/availability - query available slots
 
 **The app is now running.** Leave this terminal open.
 
-- **In your browser:** Open **http://localhost:3000** to use the web UI (select services/repairs, then click “Check availability”). The UI matches Viamanta’s look and feel (dark blue, orange, clean layout).
+- **In your browser:** Open **http://localhost:3000** to use the React web UI: select services and repairs, set the start date (default is today), then click “Check availability”). The UI matches Viamanta’s look and feel (dark blue, orange, clean layout).
 - **API only:** Use `curl` or Postman as in Step 5 below.
 
 ### Step 5: Try the API (in a *new* terminal)
@@ -157,7 +157,7 @@ More details and examples: [API.md](./API.md).
 | **API.md** | API documentation: request and response format, examples. |
 | **openapi.yaml** | OpenAPI (Swagger) description of the API. |
 | **postman_collection.json** | Postman collection to call the API. |
-| **public/** | Web UI (HTML/CSS/JS) served at http://localhost:3000 — Viamanta-style (dark blue, orange, Montserrat). |
+| **client/** | React (Vite + TypeScript) frontend; build output in **client/dist**. Served at http://localhost:3000 — Viamanta-style (dark blue, orange, Montserrat). Includes start date (default: today). |
 | **REQUIREMENTS_CHECKLIST.md** | Shows how each requirement from the case study is satisfied. |
 | **INSTALL_NODE.md** | How to install Node.js if you don’t have it. |
 

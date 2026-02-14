@@ -84,6 +84,8 @@ export interface WorkshopAvailabilityResult {
 export interface AvailabilityRequest {
   services: string[];
   repairs: string[];
+  /** Optional: start of 60-day window (YYYY-MM-DD). If omitted or in the past, today is used. */
+  startDate?: string;
 }
 
 /** Request summary in the API response */

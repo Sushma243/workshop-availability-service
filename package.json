@@ -4,7 +4,8 @@
   "description": "Workshop Booking Availability Service for fleet maintenance platform",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "npm run build:client && tsc",
+    "build:client": "cd client && npm install && npm run build",
     "start": "node dist/index.js",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "test": "jest --coverage",

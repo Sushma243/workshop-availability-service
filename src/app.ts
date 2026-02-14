@@ -15,11 +15,12 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok', service: 'workshop-availability-service' });
 });
 
-// Serve UI (Viamanta-style) from public/ — only when not in test
-const publicDir = path.join(__dirname, '../public');
-app.use(express.static(publicDir));
-app.get('/', (_req, res) => {
-  res.sendFile(path.join(publicDir, 'index.html'));
+// Serve React UI from client/dist (build with: npm run build:client)
+const clientDist = path.join(__dirname, '../client/dist');
+app.use(express.static(clientDist));
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api') || req.path === '/health') return next();
+  res.sendFile(path.join(clientDist, 'index.html'));
 });
 
 // Invalid JSON body → 400 (express.json() passes SyntaxError to next)

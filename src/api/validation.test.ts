@@ -112,4 +112,34 @@ describe('validateAvailabilityRequest', () => {
     expect(result.valid).toBe(false);
     expect(result.errors?.some((e) => e.field === 'request')).toBe(true);
   });
+
+  it('accepts optional startDate in YYYY-MM-DD format', () => {
+    const result = validateAvailabilityRequest({
+      services: ['MOT'],
+      repairs: [],
+      startDate: '2026-03-01',
+    });
+    expect(result.valid).toBe(true);
+    expect(result.data?.startDate).toBe('2026-03-01');
+  });
+
+  it('rejects startDate when not YYYY-MM-DD', () => {
+    const result = validateAvailabilityRequest({
+      services: ['MOT'],
+      repairs: [],
+      startDate: '03/01/2026',
+    });
+    expect(result.valid).toBe(false);
+    expect(result.errors?.some((e) => e.field === 'startDate')).toBe(true);
+  });
+
+  it('rejects startDate when invalid date', () => {
+    const result = validateAvailabilityRequest({
+      services: ['MOT'],
+      repairs: [],
+      startDate: '2026-13-01', // month 13 is invalid
+    });
+    expect(result.valid).toBe(false);
+    expect(result.errors?.some((e) => e.field === 'startDate')).toBe(true);
+  });
 });

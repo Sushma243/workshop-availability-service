@@ -214,8 +214,14 @@ export function computeAvailability(
   request: AvailabilityRequest,
   periodStart: Date = new Date()
 ): AvailabilityResponse {
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
   const startDate = new Date(periodStart);
-  startDate.setUTCHours(0, 0, 0, 0); // Use UTC so query window is timezone-independent
+  startDate.setUTCHours(0, 0, 0, 0);
+  // If periodStart is in the past, start from today so we don't return past slots
+  if (startDate.getTime() < today.getTime()) {
+    startDate.setTime(today.getTime());
+  }
   const endDate = new Date(startDate);
   endDate.setUTCDate(endDate.getUTCDate() + QUERY_DAYS - 1); // 60-day period: day 0..59
 

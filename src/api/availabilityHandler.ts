@@ -20,7 +20,10 @@ export function handleAvailability(req: Request, res: Response): void {
   }
   try {
     const config = getWorkshopConfig();
-    const response = computeAvailability(config, validation.data);
+    const periodStart = validation.data.startDate
+      ? new Date(validation.data.startDate + 'T12:00:00Z')
+      : new Date();
+    const response = computeAvailability(config, validation.data, periodStart);
     res.status(200).json(response);
   } catch (err) {
     console.error('Availability error:', err);

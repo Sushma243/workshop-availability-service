@@ -28,14 +28,14 @@ const minimalConfig: WorkshopConfig = {
 describe('computeAvailability', () => {
   it('returns success and request summary', () => {
     const request: AvailabilityRequest = { services: ['MOT'], repairs: ['Brakes'] };
-    const fixedDate = new Date('2026-02-09T12:00:00Z');
+    const fixedDate = new Date('2026-12-01T12:00:00Z'); // future date so not clamped to today
     const result = computeAvailability(minimalConfig, request, fixedDate);
     expect(result.success).toBe(true);
     expect(result.request.services).toEqual(['MOT']);
     expect(result.request.repairs).toEqual(['Brakes']);
     expect(result.request.totalRequestedHours).toBe(7);
-    expect(result.request.startDate).toBe('2026-02-09');
-    expect(result.request.endDate).toBe('2026-04-09'); // 60-day window: start + 59
+    expect(result.request.startDate).toBe('2026-12-01');
+    expect(result.request.endDate).toBe('2027-01-29'); // 60-day window: Dec 1 + 59 days
   });
 
   it('orders jobs with dependency first (MOT before Brakes)', () => {
@@ -95,10 +95,19 @@ describe('computeAvailability', () => {
 
   it('uses 60-day query window (startDate to endDate inclusive)', () => {
     const request: AvailabilityRequest = { services: ['MOT'], repairs: [] };
-    const start = new Date('2026-01-01T12:00:00Z');
+    const start = new Date('2026-12-01T12:00:00Z'); // future date so not clamped
     const result = computeAvailability(minimalConfig, request, start);
-    expect(result.request.startDate).toBe('2026-01-01');
-    expect(result.request.endDate).toBe('2026-03-01'); // 60-day window: Jan 1 UTC + 59 days (2026 leap year)
+    expect(result.request.startDate).toBe('2026-12-01');
+    expect(result.request.endDate).toBe('2027-01-29'); // 60-day window: Dec 1 + 59 days
+  });
+
+  it('clamps periodStart to today when periodStart is in the past', () => {
+    const request: AvailabilityRequest = { services: ['MOT'], repairs: [] };
+    const pastDate = new Date('2020-01-01T12:00:00Z');
+    const result = computeAvailability(minimalConfig, request, pastDate);
+    const todayStr = new Date().toISOString().slice(0, 10);
+    expect(result.request.startDate).toBe(todayStr);
+    expect(result.request.startDate).not.toBe('2020-01-01');
   });
 
   it('schedules jobs only within working hours', () => {
