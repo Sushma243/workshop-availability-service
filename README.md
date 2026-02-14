@@ -14,7 +14,7 @@ A backend service that **finds when** fleet vehicles can get maintenance (like M
 6. [What is inside the project? (folders and files)](#what-is-inside-the-project-folders-and-files)
 7. [How do I run the tests?](#how-do-i-run-the-tests)
 8. [Troubleshooting](#troubleshooting)
-9. [For teachers / evaluators](#for-teachers--evaluators)
+9. [For evaluators](#for-evaluators)
 
 ---
 
@@ -205,7 +205,7 @@ If there are no problems, you’ll see no errors.
 
 ---
 
-## For teachers / evaluators
+## For evaluators
 
 - **Requirements:** See [REQUIREMENTS_CHECKLIST.md](./REQUIREMENTS_CHECKLIST.md) for a mapping of case-study requirements to the codebase.
 - **Run locally:** Prerequisites: Node.js 18+. Then: `npm install` → `npm run build` → `npm start`. Server: http://localhost:3000.
